@@ -29,10 +29,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 # Controls whose verdict consults the register (frappe-gates-demo's
-# .github/scripts/verdict.py accepted(), and hermes_review.py for ai-review).
+# .github/scripts/verdict.py accepted()). Not "ai-review": the Hermes AI
+# review is advisory since 2026-11-11 — it gates nothing, so there is nothing
+# to accept, and its labels vary run to run so no entry could match reliably.
 CONTROLS = {
     "sast-semgrep", "secrets-gitleaks", "secrets-trufflehog", "sca-trivy", "iac-checkov",
-    "image-scan", "image-compliance", "dast-nuclei", "dast-tls", "ai-review",
+    "image-scan", "image-compliance", "dast-nuclei", "dast-tls",
     "config",  # the release stage's checkov run on the environment's rendered manifests
 }
 SEVERITIES = ("critical", "high", "medium", "low", "info")
