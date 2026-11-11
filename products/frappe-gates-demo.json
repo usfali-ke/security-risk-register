@@ -51,6 +51,18 @@
       "approved_by": "demo-reviewer@example.test",
       "approved_at": "2026-11-11",
       "exception_id": 1
+    },
+    {
+      "control": "sca-trivy",
+      "id": "CVE-2024-34069",
+      "severity": "high",
+      "reason": "DEMO: the Werkzeug debugger is never enabled in this app (gunicorn serves it, DEBUG off), so the debugger RCE is not reachable.",
+      "compensating_control": "Production runs gunicorn with debug off; the image has no Werkzeug debugger entry point; upgrade to werkzeug 3.0.3+ is planned.",
+      "expires": "2026-11-20",
+      "requested_by": "yussuf.adan@kns.co.ke",
+      "approved_by": "yussuf@tiberbu.com",
+      "approved_at": "2026-11-11",
+      "exception_id": 2
     }
   ]
 }
