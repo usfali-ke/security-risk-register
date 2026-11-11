@@ -21,7 +21,6 @@ Every accepted security risk (an exception to a pipeline's Critical/High gates) 
 {
   "control": "sca-trivy",
   "id": "CVE-2026-12345",
-  "match": "pillow",
   "severity": "high",
   "reason": "Why the risk is accepted (who is exposed, why not fixed now)",
   "compensating_control": "What limits the risk meanwhile (required for critical/high)",
@@ -37,9 +36,9 @@ Every accepted security risk (an exception to a pipeline's Critical/High gates) 
 
 | Field | Meaning |
 |---|---|
-| `control` | The pipeline control: `sast-semgrep`, `secrets-gitleaks`, `secrets-trufflehog`, `sca-trivy`, `iac-checkov`, `image-scan`, `image-compliance`, `dast-nuclei`, `dast-tls`, `ai-review`, `config` (the release stage's manifest check) |
+| `control` | The pipeline control: `sast-semgrep`, `secrets-gitleaks`, `secrets-trufflehog`, `sca-trivy`, `image-scan`, `image-compliance`, `dast-nuclei`, `dast-tls`, `ai-review`. Not checkov: its exceptions are inline `checkov:skip` annotations in the product's code. |
 | `id` | The finding's identity in that control: rule id, CVE or check id. For `ai-review`, `CWE-<n>`. |
-| `match` | Optional substring that narrows the entry (a file, package or title) |
+| `match` | Optional substring that narrows the entry. Only for `sast-semgrep` and `secrets-gitleaks` (file path), `image-compliance` (dockle alert text) and `ai-review` (file path or title). The other controls pass no text, so the validator refuses a `match` on them: the entry would never match. |
 | `unfixed_only` | Optional. `true` accepts the finding only while it has no fix available. |
 
 **Maximum lifetime from `approved_at`:** critical 30 days, high 90, medium 180, low and info 365. An expired entry accepts nothing. The daily `expiry` workflow lists entries expiring within 14 days in an issue.
