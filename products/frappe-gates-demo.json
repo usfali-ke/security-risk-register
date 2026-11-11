@@ -1,0 +1,44 @@
+{
+  "product": "frappe-gates-demo",
+  "accepted": [
+    {
+      "control": "dast-tls",
+      "id": "cert_revocation",
+      "severity": "high",
+      "reason": "The harness CA publishes no OCSP or CRL endpoints, so revocation status cannot be evaluated at all. A public certificate served by a real ingress is checked by the browser and by the dashboard's own probe; nothing about this deployment is learned by failing it here.",
+      "compensating_control": "Production serves the cluster ingress's public certificate, which browsers and the dashboard's own TLS probe check; this finding is about the ephemeral test-harness CA only.",
+      "expires": "2027-01-25",
+      "requested_by": "usfali-ke",
+      "approved_by": "usfadan",
+      "approved_at": "2026-10-27",
+      "ticket": "https://github.com/usfali-ke/frappe-gates-demo/pull/44",
+      "migrated_from": "usfali-ke/frappe-gates-demo:security/accepted-risks.json@e839a3bd91b3 (expiry tightened from 2027-01-31 to the 90-day HIGH cap)"
+    },
+    {
+      "control": "dast-tls",
+      "id": "intermediate_cert_expiration",
+      "severity": "high",
+      "reason": "Caddy's internal intermediate CA is short-lived and rotated by Caddy itself on restart. Its expiry is a property of the ephemeral harness CA, not of the service certificate under test.",
+      "compensating_control": "Production serves the cluster ingress's public certificate, which browsers and the dashboard's own TLS probe check; this finding is about the ephemeral test-harness CA only.",
+      "expires": "2027-01-25",
+      "requested_by": "usfali-ke",
+      "approved_by": "usfadan",
+      "approved_at": "2026-10-27",
+      "ticket": "https://github.com/usfali-ke/frappe-gates-demo/pull/44",
+      "migrated_from": "usfali-ke/frappe-gates-demo:security/accepted-risks.json@e839a3bd91b3 (expiry tightened from 2027-01-31 to the 90-day HIGH cap)"
+    },
+    {
+      "control": "dast-tls",
+      "id": "intermediate_cert_notAfter",
+      "severity": "high",
+      "reason": "Same internal intermediate CA: notAfter is regenerated with the CA on every harness start.",
+      "compensating_control": "Production serves the cluster ingress's public certificate, which browsers and the dashboard's own TLS probe check; this finding is about the ephemeral test-harness CA only.",
+      "expires": "2027-01-25",
+      "requested_by": "usfali-ke",
+      "approved_by": "usfadan",
+      "approved_at": "2026-10-27",
+      "ticket": "https://github.com/usfali-ke/frappe-gates-demo/pull/44",
+      "migrated_from": "usfali-ke/frappe-gates-demo:security/accepted-risks.json@e839a3bd91b3 (expiry tightened from 2027-01-31 to the 90-day HIGH cap)"
+    }
+  ]
+}

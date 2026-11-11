@@ -1,0 +1,52 @@
+name: expiry
+
+# Daily: accepted risks expiring within 14 days (or already expired) are listed
+# in one open issue, so they are renewed through a new exception request or the
+# finding is fixed before the gate starts blocking again.
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  expiring:
+    name: expiring accepted risks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: List and file
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/validate.py --expiring 14 > /dev/null
+          title="Accepted risks expiring within 14 days"
+          api() { curl -fsS -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "$@"; }
+          open=$(api "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues?state=open&per_page=100" \
+            | jq -r --arg t "$title" '[.[] | select(.title == $t and (.pull_request | not))][0].number // empty')
+          if grep -q '^None\.$' expiring.md; then
+            if [ -n "$open" ]; then
+              api -X PATCH "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues/$open" -d '{"state":"closed","state_reason":"completed"}' > /dev/null
+              echo "nothing expiring; closed #$open"
+            else
+              echo "nothing expiring"
+            fi
+            exit 0
+          fi
+          body=$(jq -Rs . < expiring.md)
+          if [ -n "$open" ]; then
+            api -X PATCH "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues/$open" -d "{\"body\": $body}" > /dev/null
+            echo "updated #$open"
+          else
+            api -X POST "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues" -d "{\"title\": \"$title\", \"body\": $body}" > /dev/null
+            echo "opened an issue"
+          fi

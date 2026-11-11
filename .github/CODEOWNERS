@@ -1,0 +1,4 @@
+# Security reviewers own every accepted-risk decision. The ruleset requires a
+# code owner's approval, and validate.py requires the approver to differ from
+# the requester.
+*       @usfadan
