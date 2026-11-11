@@ -30,10 +30,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 # Controls whose verdict consults the register (frappe-gates-demo's
 # .github/scripts/verdict.py accepted(), and hermes_review.py for ai-review).
+# Not checkov (iac-checkov, config): its exceptions are inline checkov:skip
+# annotations in the product's code, so an entry here would waive nothing.
 CONTROLS = {
-    "sast-semgrep", "secrets-gitleaks", "secrets-trufflehog", "sca-trivy", "iac-checkov",
+    "sast-semgrep", "secrets-gitleaks", "secrets-trufflehog", "sca-trivy",
     "image-scan", "image-compliance", "dast-nuclei", "dast-tls", "ai-review",
-    "config",  # the release stage's checkov run on the environment's rendered manifests
+}
+# What `match` is compared with, per control. The others pass no text, so a
+# `match` there would never match: the entry would silently accept nothing.
+MATCH_TARGET = {
+    "sast-semgrep": "file path", "secrets-gitleaks": "file path",
+    "image-compliance": "dockle alert text", "ai-review": "file path or title",
 }
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MAX_DAYS = {"critical": 30, "high": 90, "medium": 180, "low": 365, "info": 365}
@@ -78,6 +85,9 @@ def check_entry(where: str, e: dict, today: dt.date) -> list[str]:
             errs.append(f"{where}: unknown field '{key}' (typo?)")
     if e.get("control") and e["control"] not in CONTROLS:
         errs.append(f"{where}: control '{e['control']}' does not consult the register (one of: {', '.join(sorted(CONTROLS))})")
+    if e.get("match") and e.get("control") in CONTROLS and e["control"] not in MATCH_TARGET:
+        errs.append(f"{where}: {e['control']} can't be scoped with `match` (it passes no file or package, so the entry "
+                    f"would never match); scopes work for {', '.join(sorted(MATCH_TARGET))}")
     sev = e.get("severity")
     if sev and sev not in SEVERITIES:
         errs.append(f"{where}: severity must be one of {', '.join(SEVERITIES)}")
