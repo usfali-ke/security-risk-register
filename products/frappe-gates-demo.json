@@ -63,6 +63,19 @@
       "approved_by": "yussuf@tiberbu.com",
       "approved_at": "2026-11-11",
       "exception_id": 2
+    },
+    {
+      "control": "ai-review",
+      "id": "CWE-639",
+      "match": "frappe_gates_demo/api.py",
+      "severity": "high",
+      "reason": "DEMO: walkthrough of the exception process; the endpoint is removed when the demo ends and is never merged to main.",
+      "compensating_control": "The PR is never merged; the endpoint never reaches an environment; the branch is deleted at the end of the walkthrough.",
+      "expires": "2026-11-20",
+      "requested_by": "yussuf.adan@kns.co.ke",
+      "approved_by": "yussuf@tiberbu.com",
+      "approved_at": "2026-11-11",
+      "exception_id": 3
     }
   ]
 }
