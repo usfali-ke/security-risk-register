@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CONTROLS = {
     "sast-semgrep", "secrets-gitleaks", "secrets-trufflehog", "sca-trivy", "iac-checkov",
     "image-scan", "image-compliance", "dast-nuclei", "dast-tls", "ai-review",
+    "config",  # the release stage's checkov run on the environment's rendered manifests
 }
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MAX_DAYS = {"critical": 30, "high": 90, "medium": 180, "low": 365, "info": 365}
