@@ -33,9 +33,10 @@ ROOT = Path(__file__).resolve().parent.parent
 # review is advisory since 2026-11-11 — it gates nothing, so there is nothing
 # to accept, and its labels vary run to run so no entry could match reliably.
 CONTROLS = {
-    "sast-semgrep", "secrets-gitleaks", "secrets-trufflehog", "sca-trivy", "iac-checkov",
+    "sast-semgrep", "secrets-gitleaks", "secrets-trufflehog", "sca-trivy",
+    "iac-trivy",  # trivy config on the Dockerfile and the rendered manifests (replaced checkov, 2026-11-12)
     "image-scan", "image-compliance", "dast-nuclei", "dast-tls",
-    "config",  # the release stage's checkov run on the environment's rendered manifests
+    "config",  # the release stage's trivy config run on the environment's rendered manifests
 }
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MAX_DAYS = {"critical": 30, "high": 90, "medium": 180, "low": 365, "info": 365}
