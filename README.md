@@ -37,7 +37,7 @@ Every accepted security risk (an exception to a pipeline's Critical/High gates) 
 
 | Field | Meaning |
 |---|---|
-| `control` | The pipeline control: `sast-semgrep`, `secrets-gitleaks`, `secrets-trufflehog`, `sca-trivy`, `iac-checkov`, `image-scan`, `image-compliance`, `dast-nuclei`, `dast-tls`, `config` (the release stage's manifest check). Not the Hermes AI review: it is advisory and gates nothing. |
+| `control` | The pipeline control: `sast-semgrep`, `secrets-gitleaks`, `secrets-trufflehog`, `sca-trivy`, `iac-trivy` (trivy config: the Dockerfile and rendered manifests; scope on the file or Kubernetes object, e.g. `Role env-tester`), `image-scan`, `image-compliance`, `dast-nuclei`, `dast-tls`, `config` (the release stage's manifest check). Not the Hermes AI review: it is advisory and gates nothing. |
 | `id` | The finding's identity in that control: rule id, CVE or check id. |
 | `match` | Optional substring that narrows the entry (a file, package or title) |
 | `unfixed_only` | Optional. `true` accepts the finding only while it has no fix available. |
