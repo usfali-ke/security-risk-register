@@ -1,0 +1,17 @@
+{
+  "product": "hmis-develop",
+  "accepted": [
+    {
+      "control": "sca-trivy",
+      "id": "CVE-2023-36464",
+      "severity": "medium",
+      "reason": "Breaking feature dependency, team need time to fix the issue.",
+      "compensating_control": "Proactive monitoring using a SIEM use case specific for this attacks.",
+      "expires": "2026-12-31",
+      "requested_by": "yussuf.adan@kns.co.ke",
+      "approved_by": "yussuf@tiberbu.com",
+      "approved_at": "2026-11-16",
+      "exception_id": 5
+    }
+  ]
+}
