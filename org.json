@@ -1,4 +1,17 @@
 {
   "product": "*",
-  "accepted": []
+  "accepted": [
+    {
+      "control": "sca-trivy",
+      "id": "CVE-2026-102598",
+      "severity": "medium",
+      "reason": "The dependency upgrade is breaking features, working to find a working secure patch.",
+      "compensating_control": "SIEM use case to proactively monitor any attack.",
+      "expires": "2026-12-31",
+      "requested_by": "yussuf@tiberbu.com",
+      "approved_by": "yussuf.adan@kns.co.ke",
+      "approved_at": "2026-11-16",
+      "exception_id": 4
+    }
+  ]
 }
